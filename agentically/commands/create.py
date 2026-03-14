@@ -1,4 +1,4 @@
-"""agentically use — install an agent system into the current directory."""
+"""agentically create — install an agent system into the current directory."""
 
 from __future__ import annotations
 
@@ -84,7 +84,7 @@ def _prompt_platform(detected: str | None) -> str | None:
     return None if selection == "skip" else selection
 
 
-def use_command(
+def create_command(
     name: str = typer.Argument(..., help="Name of the agent system to install."),
     yes: bool = typer.Option(
         False, "--yes", "-y", help="Skip confirmation prompts."

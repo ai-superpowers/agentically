@@ -94,7 +94,7 @@ def explore_command() -> None:
         for name in agent_names:
             _console.print(f"  • {name}")
         _console.print(
-            "\nRun [bold]agentically use <name>[/bold] to install one."
+            "\nRun [bold]agentically create <name>[/bold] to install one."
         )
     else:
         _console.print(

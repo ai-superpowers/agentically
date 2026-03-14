@@ -21,7 +21,7 @@ agents/
 ### Why this structure?
 
 The `prompts/` and `skills/` layout is a platform-agnostic standard. When users
-run `agentically use <name> --platform <platform>`, the CLI maps these directories
+run `agentically create <name> --platform <platform>`, the CLI maps these directories
 to the right locations for each tool:
 
 | Platform  | `prompts/*.md` becomes            | `skills/<s>/SKILL.md` becomes |

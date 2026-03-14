@@ -35,7 +35,7 @@ agents/my-agent-system/
 **README.md must include:**
 - What the agent system does
 - What files it installs
-- Example usage with `agentically use <name>`
+- Example usage with `agentically create <name>`
 
 ### 4. Keep it platform-agnostic
 
@@ -52,16 +52,16 @@ Push your branch and open a PR against `main`. Include:
 Maintainers will review and merge it. Once merged, your agent system is immediately available via:
 
 ```bash
-agentically use my-agent-system
+agentically create my-agent-system
 ```
 
 ## Agent System File Conventions
 
-| File                              | Purpose                                                      |
-| --------------------------------- | ------------------------------------------------------------ |
-| `README.md`                       | Required. Description and usage instructions                 |
-| `instructions.md`                 | Recommended. Core instruction content for AI assistants      |
-| Any `.md`, `.yaml`, `.json`, etc. | Fine — the `use` command downloads everything in your folder |
+| File                              | Purpose                                                         |
+| --------------------------------- | --------------------------------------------------------------- |
+| `README.md`                       | Required. Description and usage instructions                    |
+| `instructions.md`                 | Recommended. Core instruction content for AI assistants         |
+| Any `.md`, `.yaml`, `.json`, etc. | Fine — the `create` command downloads everything in your folder |
 
 ## Questions?
 

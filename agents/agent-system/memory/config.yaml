@@ -1,0 +1,48 @@
+schema: spec-driven
+
+# agentically registry context
+# This is shown to the AI when creating artifacts for agent systems.
+
+context: |
+  This project follows the agentically community registry format.
+  Registry: https://github.com/ai-superpowers/agentically
+  CLI install command: agentically create <name>
+
+  Agent system directory layout:
+    agents/<name>/
+      prompts/          ← user-invokable AI commands (.md with YAML frontmatter)
+      skills/           ← persistent AI behaviors (<skill-name>/SKILL.md)
+      memory/           ← runtime working state (config.yaml, subdirectories)
+      README.md         ← required: describes the agent system
+
+  Platform prompt installation paths (--platform flag):
+    cursor:  .cursor/commands/<stem>.md
+    copilot: .github/prompts/<stem>.prompt.md
+    claude:  .claude/commands/<prefix>/<suffix>.md  (split on first -)
+    kiro:    .kiro/prompts/<stem>.prompt.md
+
+  Platform skill installation paths:
+    cursor:  .cursor/skills/<name>/SKILL.md
+    copilot: .github/skills/<name>/SKILL.md
+    claude:  .claude/skills/<name>/SKILL.md
+    kiro:    .kiro/skills/<name>/SKILL.md
+
+  Prompt naming convention (for clean Claude slash commands):
+    Use <agentname>-<commandname>.md → /agentname:commandname in Claude
+    Example: review-start.md → /review:start
+
+  Required prompt frontmatter:
+    ---
+    description: One-line description of what this command does
+    ---
+
+  Required SKILL.md frontmatter:
+    ---
+    name: <agent-name>-<skill-name>
+    description: One-line description (used for auto-invocation)
+    license: MIT
+    compatibility: <requirements or "No external dependencies.">
+    metadata:
+      author: <author>
+      version: "1.0"
+    ---

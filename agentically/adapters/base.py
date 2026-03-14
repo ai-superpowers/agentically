@@ -8,7 +8,7 @@ installed location inside ``<platform_dir>/``:
   * ``memory/**``               →  ``<platform_dir>/memory/**``
   * ``README.md``               →  ``<platform_dir>/<agent-name>-README.md``
 
-Files are written directly to these destinations by the ``use`` command, so
+Files are written directly to these destinations by the ``create`` command, so
 stacking multiple agent systems is safe: prompts and skills are appended into
 the same folder without overwriting each other.
 

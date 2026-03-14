@@ -18,14 +18,14 @@ Opens the community registry in your browser so you can browse available agent s
 agentically explore
 ```
 
-### `agentically use <name>`
+### `agentically create <name>`
 
 Downloads the named agent system from the registry into your current working directory.
 
 ```bash
 mkdir my-project
 cd my-project
-agentically use example-agent
+agentically create agent-system
 ```
 
 Options:
@@ -40,13 +40,13 @@ Options:
 
 ```bash
 # GitHub Copilot — adds content to .github/copilot-instructions.md
-agentically use example-agent --platform copilot
+agentically create agent-system --platform copilot
 
 # Claude Code — creates or appends to CLAUDE.md
-agentically use example-agent --platform claude
+agentically create agent-system --platform claude
 
 # Kiro — creates .kiro/steering/<name>.md
-agentically use example-agent --platform kiro
+agentically create agent-system --platform kiro
 ```
 
 The CLI will also auto-detect your platform if you have existing config files (`.github/copilot-instructions.md`, `CLAUDE.md`, `.kiro/`).
@@ -57,7 +57,7 @@ The CLI will also auto-detect your platform if you have existing config files (`
 mkdir new-project
 cd new-project
 agentically explore          # browse the registry
-agentically use some-agent   # install an agent system
+agentically create some-agent   # install an agent system
 ```
 
 After installing, the agent system's prompt and instruction files will be available in your project for use with your AI coding tool of choice.

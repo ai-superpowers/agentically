@@ -9,14 +9,14 @@ import typer
 from rich.console import Console
 
 from agentically.commands.explore import explore_command
-from agentically.commands.use import use_command
+from agentically.commands.create import create_command
 
 app = typer.Typer(
     name="agentically",
     help=(
         "Discover and install AI agent systems from the community registry.\n\n"
         "Run [bold]agentically explore[/bold] to browse available agent systems,\n"
-        "then [bold]agentically use <name>[/bold] to install one."
+        "then [bold]agentically create <name>[/bold] to install one."
     ),
     no_args_is_help=True,
     rich_markup_mode="rich",
@@ -48,4 +48,4 @@ def _main(
 
 # Register subcommands
 app.command("explore")(explore_command)
-app.command("use")(use_command)
+app.command("create")(create_command)
