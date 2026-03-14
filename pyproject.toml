@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agentically"
+version = "0.1.0"
+description = "A CLI entrypoint to community-maintained AI agent systems"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+keywords = ["agents", "ai", "cli", "copilot"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "typer>=0.12.0",
+    "requests>=2.31.0",
+    "rich>=13.0.0",
+]
+
+[project.scripts]
+agentically = "agentically.main:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["agentically"]
