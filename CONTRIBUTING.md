@@ -4,11 +4,11 @@ Thank you for wanting to contribute! The fastest way to contribute is to add a n
 
 ## Adding an Agent System
 
-### 1. Fork and clone the repository
+### 1. Clone the repository
 
 ```bash
-git clone https://github.com/dev-agent-hub/dev_agent_hub.git
-cd dev_agent_hub
+git clone https://github.com/ai-superpowers/agentically.git
+cd agentically
 ```
 
 ### 2. Create a folder for your agent system
@@ -34,6 +34,7 @@ agents/my-agent-system/
 
 **README.md must include:**
 - What the agent system does
+- How to use the agent system
 - What files it installs
 - Example usage with `agentically create <name>`
 
@@ -55,13 +56,6 @@ Maintainers will review and merge it. Once merged, your agent system is immediat
 agentically create my-agent-system
 ```
 
-## Agent System File Conventions
-
-| File                              | Purpose                                                         |
-| --------------------------------- | --------------------------------------------------------------- |
-| `README.md`                       | Required. Description and usage instructions                    |
-| `instructions.md`                 | Recommended. Core instruction content for AI assistants         |
-| Any `.md`, `.yaml`, `.json`, etc. | Fine — the `create` command downloads everything in your folder |
 
 ## Questions?
 
