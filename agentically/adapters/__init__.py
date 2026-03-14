@@ -1,40 +1,37 @@
-"""Platform adapters — post-install file adaptations per coding platform.
+"""Platform adapters — direct-placement file routing per coding platform.
 
 To add a new platform adapter:
   1. Create ``agentically/adapters/<platform>.py`` with a ``PlatformAdapter``
-     subclass and a module-level ``adapt = _adapter.adapt``.
-  2. Import the ``adapt`` function here and add it to ``_ADAPTERS``.
+     subclass and a module-level ``_adapter = MyAdapter()``.
+  2. Import ``_adapter`` here and add it to ``_ADAPTERS``.
   3. Add the platform name to ``SUPPORTED_PLATFORMS``.
 """
 
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Callable
 
 from agentically.adapters.base import PlatformAdapter
-from agentically.adapters.claude import adapt as _claude_adapt
-from agentically.adapters.copilot import adapt as _copilot_adapt
-from agentically.adapters.cursor import adapt as _cursor_adapt
-from agentically.adapters.kiro import adapt as _kiro_adapt
+from agentically.adapters.claude import _adapter as _claude_adapter
+from agentically.adapters.copilot import _adapter as _copilot_adapter
+from agentically.adapters.cursor import _adapter as _cursor_adapter
+from agentically.adapters.kiro import _adapter as _kiro_adapter
 
-# Supported platform identifiers and their adapter functions.
-# Each adapter signature: (cwd: Path, agent_name: str, written: list[Path]) -> None
-AdapterFn = Callable[[Path, str, list[Path]], None]
+# Supported platform identifiers and their adapter instances.
 
 SUPPORTED_PLATFORMS: frozenset[str] = frozenset({"claude", "copilot", "cursor", "kiro"})
 
-_ADAPTERS: dict[str, AdapterFn] = {
-    "claude": _claude_adapt,
-    "copilot": _copilot_adapt,
-    "cursor": _cursor_adapt,
-    "kiro": _kiro_adapt,
+_ADAPTERS: dict[str, PlatformAdapter] = {
+    "claude": _claude_adapter,
+    "copilot": _copilot_adapter,
+    "cursor": _cursor_adapter,
+    "kiro": _kiro_adapter,
 }
 
 
-def adapt(platform: str, cwd: Path, agent_name: str, written: list[Path]) -> None:
-    """Apply the platform-specific adapter for the given platform."""
-    _ADAPTERS[platform](cwd, agent_name, written)
+def get_adapter(platform: str) -> PlatformAdapter:
+    """Return the ``PlatformAdapter`` instance for *platform*."""
+    return _ADAPTERS[platform]
 
 
 def detect_platform(cwd: Path) -> str | None:

@@ -17,4 +17,3 @@ class KiroAdapter(PlatformAdapter):
 
 
 _adapter = KiroAdapter()
-adapt = _adapter.adapt

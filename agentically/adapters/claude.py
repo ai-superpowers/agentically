@@ -25,4 +25,3 @@ class ClaudeAdapter(PlatformAdapter):
 
 
 _adapter = ClaudeAdapter()
-adapt = _adapter.adapt

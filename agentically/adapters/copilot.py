@@ -17,4 +17,3 @@ class CopilotAdapter(PlatformAdapter):
 
 
 _adapter = CopilotAdapter()
-adapt = _adapter.adapt

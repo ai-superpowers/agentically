@@ -1,29 +1,30 @@
 """Shared base class for all platform adapters.
 
-Agent systems are installed verbatim by the ``use`` command, so all folders
-(``memory/``, ``agents/``, etc.) are already in place at *cwd* when the
-adapter runs.  The adapter's only responsibility is to copy the two
-platform-agnostic folders into their platform-specific locations:
+The ``dest_for`` method maps every agent-relative path directly to its final
+installed location inside ``<platform_dir>/``:
 
-  * ``prompts/*.md``        →  ``<platform_dir>/<prompts_subdir>/``
+  * ``prompts/*.md``            →  ``<platform_dir>/<prompts_subdir>/…``
   * ``skills/<name>/SKILL.md``  →  ``<platform_dir>/<skills_subdir>/<name>/SKILL.md``
+  * ``memory/**``               →  ``<platform_dir>/memory/**``
+  * ``README.md``               →  ``<platform_dir>/<agent-name>-README.md``
+
+Files are written directly to these destinations by the ``use`` command, so
+stacking multiple agent systems is safe: prompts and skills are appended into
+the same folder without overwriting each other.
 
 To add a new platform:
   1. Create ``agentically/adapters/<platform>.py``.
   2. Subclass ``PlatformAdapter``, set ``name``, ``platform_dir``,
      ``prompts_subdir``; override ``prompt_dest`` if your platform uses a
-     different filename convention.
-  3. Add ``_adapter = MyAdapter(); adapt = _adapter.adapt`` at module level.
+     different filename convention (e.g. ``.prompt.md`` suffix or a
+     subfolder split on ``-``).
+  3. Add ``_adapter = MyAdapter()`` at module level.
   4. Register it in ``agentically/adapters/__init__.py``.
 """
 
 from __future__ import annotations
 
 from pathlib import Path
-
-from rich.console import Console
-
-console = Console()
 
 
 class PlatformAdapter:
@@ -50,15 +51,28 @@ class PlatformAdapter:
     prompts_subdir: str
     skills_subdir: str = "skills"
 
-    def adapt(self, cwd: Path, agent_name: str, written: list[Path]) -> None:
-        """Copy ``prompts/`` and ``skills/`` into the platform config directories.
+    def dest_for(self, cwd: Path, agent_name: str, rel_path: Path) -> Path:
+        """Map an agent-relative *rel_path* to its final installed location.
 
-        All other directories present in *cwd* (e.g. ``memory/``, ``agents/``)
-        are already in place from the install step and are left untouched.
+        Mapping rules:
+
+        - ``prompts/<stem>.md``  → ``<platform_dir>/<prompts_subdir>/…`` (via ``prompt_dest``)
+        - ``skills/<rest>``      → ``<platform_dir>/<skills_subdir>/<rest>``
+        - ``memory/<rest>``      → ``<platform_dir>/memory/<rest>``
+        - ``README.md``          → ``<platform_dir>/<agent_name>-README.md``
+        - anything else          → ``<platform_dir>/<rel_path>``
         """
+        parts = rel_path.parts
         platform_root = cwd / self.platform_dir
-        self._copy_prompts(cwd / "prompts", platform_root / self.prompts_subdir, cwd)
-        self._copy_skills(cwd / "skills", platform_root / self.skills_subdir, cwd)
+        if parts[0] == "prompts" and rel_path.suffix == ".md":
+            return self.prompt_dest(platform_root / self.prompts_subdir, rel_path.stem)
+        if parts[0] == "skills":
+            return platform_root / self.skills_subdir / Path(*parts[1:])
+        if parts[0] == "memory":
+            return platform_root / "memory" / Path(*parts[1:])
+        if len(parts) == 1 and parts[0] == "README.md":
+            return platform_root / f"{agent_name}-README.md"
+        return platform_root / rel_path
 
     def prompt_dest(self, prompts_base: Path, stem: str) -> Path:
         """Return the destination path for a prompt file given its *stem*.
@@ -68,32 +82,3 @@ class PlatformAdapter:
         subfolder split on ``-``).
         """
         return prompts_base / f"{stem}.md"
-
-    # ------------------------------------------------------------------
-    # Internal helpers
-    # ------------------------------------------------------------------
-
-    def _copy_prompts(self, prompts_dir: Path, prompts_base: Path, cwd: Path) -> None:
-        if not prompts_dir.is_dir():
-            return
-        for prompt_file in sorted(prompts_dir.glob("*.md")):
-            dest = self.prompt_dest(prompts_base, prompt_file.stem)
-            dest.parent.mkdir(parents=True, exist_ok=True)
-            dest.write_bytes(prompt_file.read_bytes())
-            console.print(f"  [dim]({self.name}) Created {dest.relative_to(cwd)}[/dim]")
-
-    def _copy_skills(self, skills_dir: Path, skills_base: Path, cwd: Path) -> None:
-        if not skills_dir.is_dir():
-            return
-        for skill_dir in sorted(skills_dir.iterdir()):
-            if not skill_dir.is_dir():
-                continue
-            skill_md = skill_dir / "SKILL.md"
-            if skill_md.exists():
-                target = skills_base / skill_dir.name
-                target.mkdir(parents=True, exist_ok=True)
-                dest = target / "SKILL.md"
-                dest.write_bytes(skill_md.read_bytes())
-                console.print(
-                    f"  [dim]({self.name}) Created {dest.relative_to(cwd)}[/dim]"
-                )

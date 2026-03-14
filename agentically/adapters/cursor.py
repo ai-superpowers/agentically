@@ -13,4 +13,3 @@ class CursorAdapter(PlatformAdapter):
 
 
 _adapter = CursorAdapter()
-adapt = _adapter.adapt

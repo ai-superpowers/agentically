@@ -59,19 +59,28 @@ def _prompt_platform(detected: str | None) -> str | None:
     from agentically.adapters import SUPPORTED_PLATFORMS
 
     choices = sorted(SUPPORTED_PLATFORMS) + ["skip"]
-    default = detected if detected in SUPPORTED_PLATFORMS else "skip"
+    default_index = (
+        choices.index(detected) + 1
+        if detected in choices
+        else len(choices)  # "skip"
+    )
 
     _console.print("\n[bold]Apply a platform adaptation?[/bold]")
     for i, choice in enumerate(choices, 1):
         detected_tag = " [dim](detected)[/dim]" if choice == detected else ""
         _console.print(f"  {i}. {choice}{detected_tag}")
 
-    selection = Prompt.ask(
-        "\nPlatform",
-        choices=choices,
-        default=default,
-        show_choices=False,
-    )
+    while True:
+        raw = Prompt.ask(
+            "\nEnter number",
+            default=str(default_index),
+            show_default=True,
+        ).strip()
+        if raw.isdigit() and 1 <= int(raw) <= len(choices):
+            selection = choices[int(raw) - 1]
+            break
+        _console.print(f"[yellow]Please enter a number between 1 and {len(choices)}.[/yellow]")
+
     return None if selection == "skip" else selection
 
 
@@ -91,7 +100,7 @@ def use_command(
     ),
 ) -> None:
     """Install an agent system into the current directory."""
-    from agentically.adapters import SUPPORTED_PLATFORMS, adapt, detect_platform
+    from agentically.adapters import SUPPORTED_PLATFORMS, detect_platform, get_adapter
 
     # Validate --platform early so the user gets feedback before any download
     if platform and platform not in SUPPORTED_PLATFORMS:
@@ -126,20 +135,34 @@ def use_command(
             raise typer.Exit(0)
 
     cwd = Path.cwd()
+
+    # Determine platform before writing any files so we route directly into
+    # the platform folder — no staging step, safe to stack agent systems.
+    active_platform = platform  # from --platform flag (already validated)
+    if active_platform is None:
+        detected = detect_platform(cwd)
+        if yes:
+            active_platform = detected  # silent auto-detect; may be None
+        else:
+            active_platform = _prompt_platform(detected)
+
+    adapter = get_adapter(active_platform) if active_platform else None
+
     prefix = f"agents/{name}/"
     written: list[Path] = []
     skipped: list[Path] = []
 
     for entry in files:
         rel_path = Path(entry["path"][len(prefix):])
-        dest = cwd / rel_path
+        dest = adapter.dest_for(cwd, name, rel_path) if adapter else cwd / rel_path
+        display_path = dest.relative_to(cwd)
 
         # Conflict check
         if dest.exists() and not force:
             if not Confirm.ask(
-                f"[yellow]Conflict:[/yellow] [bold]{rel_path}[/bold] already exists. Overwrite?"
+                f"[yellow]Conflict:[/yellow] [bold]{display_path}[/bold] already exists. Overwrite?"
             ):
-                skipped.append(rel_path)
+                skipped.append(display_path)
                 continue
 
         # Download
@@ -151,10 +174,12 @@ def use_command(
 
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_bytes(content)
-        written.append(rel_path)
+        written.append(display_path)
 
     # Summary
     _console.print(f"\n[bold green]✓ Installed {name}[/bold green]")
+    if active_platform:
+        _console.print(f"  Platform: {active_platform}")
     if written:
         _console.print(f"  Files written ({len(written)}):")
         for p in written:
@@ -163,19 +188,8 @@ def use_command(
         _console.print(f"  [dim]Skipped ({len(skipped)}):[/dim]")
         for p in skipped:
             _console.print(f"    [dim]{p}[/dim]")
-
-    # Platform adaptation
-    active_platform = platform  # already validated above if provided
-    if active_platform is None:
-        active_platform = _prompt_platform(detect_platform(cwd))
-
-    if active_platform:
+    if not active_platform:
         _console.print(
-            f"\n[bold]Applying platform adaptation:[/bold] {active_platform}"
-        )
-        adapt(active_platform, cwd, name, written)
-    else:
-        _console.print(
-            "\n[dim]Skipped platform adaptation. "
-            "Re-run with [bold]--platform <platform>[/bold] to apply one.[/dim]"
+            "\n[dim]No platform selected. "
+            "Re-run with [bold]--platform <platform>[/bold] to install into a platform folder.[/dim]"
         )
