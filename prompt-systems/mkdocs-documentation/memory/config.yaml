@@ -1,0 +1,43 @@
+schema: mkdocs-documentation
+
+context: |
+  This is the mkdocs-documentation agent system.
+  It generates MkDocs Material documentation from a codebase in two phases:
+    1. /mkdocs-documentation:analyze — scans the codebase and writes memory/analysis/
+    2. /mkdocs-documentation:build  — reads memory/analysis/ and generates docs/
+
+  Agent system layout (after agentically create):
+    prompts/
+      mkdocs-documentation-analyze.md   ← Phase 1: analyze codebase
+      mkdocs-documentation-build.md     ← Phase 2: build documentation
+    skills/
+      analyze-codebase/SKILL.md         ← source scanning and term extraction
+      mkdocs-material/SKILL.md          ← MkDocs Material config and page patterns
+    memory/
+      config.yaml                       ← project settings (this file)
+      analysis/                         ← analysis artifacts (written by analyze)
+
+# ─── Project settings ────────────────────────────────────────────────────────
+
+project_root: "."           # Relative or absolute path to the codebase root.
+                            # Override with the path argument to /mkdocs-documentation:analyze.
+
+project_name: ""            # Display name for the MkDocs site.
+                            # Leave blank to infer from pyproject.toml, package.json, or directory name.
+
+docs_output_dir: "docs"     # Directory where documentation files are written.
+
+mkdocs_config_path: "mkdocs.yml"   # Path to write the mkdocs.yml config file.
+
+# ─── Style settings ──────────────────────────────────────────────────────────
+
+style:
+  theme_palette: indigo     # MkDocs Material primary color.
+                            # Options: red, pink, purple, deep-purple, indigo, blue, light-blue,
+                            #          cyan, teal, green, light-green, lime, yellow, amber,
+                            #          orange, deep-orange, brown, grey, blue-grey, black, white
+  code_highlight: true      # Enable syntax highlighting in code blocks.
+
+  api_style: mkdocstrings   # How to generate API reference pages.
+                            # mkdocstrings: use ::: directives (Python only, requires mkdocstrings[python])
+                            # manual: write symbol tables from docstrings by hand

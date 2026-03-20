@@ -26,7 +26,7 @@ When building a complete agent system, create:
 ```
 prompt-systems/<name>/
   prompts/                     ← one file per user-invokable command
-    <prefix>-<command>.md
+    <prefix>-<command>.prompt.md
   skills/                      ← one folder per persistent behavior
     <skill-name>/
       SKILL.md

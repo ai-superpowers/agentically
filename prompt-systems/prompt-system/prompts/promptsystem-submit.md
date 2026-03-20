@@ -8,7 +8,7 @@ I'll run the final pre-submission checklist, generate a ready-to-paste PR descri
 
 ---
 
-**Input**: Optionally provide the agent system name (e.g., `/promptsystem:submit my-agent`). If omitted, I'll look for a recently tested agent system.
+**Input**: Optionally provide the agent system name (e.g., `/promptsystem-submit my-agent`). If omitted, I'll look for a recently tested agent system.
 
 ---
 

@@ -8,7 +8,7 @@ I'll interview you about the workflow you want to automate, then produce a struc
 
 ---
 
-**Input**: Optionally provide a name or description after the command (e.g., `/promptsystem:design code-reviewer` or `/promptsystem:design something that reviews PRs`). If nothing is provided, I'll ask.
+**Input**: Optionally provide a name or description after the command (e.g., `/promptsystem-design code-reviewer` or `/promptsystem-design something that reviews PRs`). If nothing is provided, I'll ask.
 
 ---
 

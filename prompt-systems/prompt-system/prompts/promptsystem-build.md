@@ -8,7 +8,7 @@ I'll read the spec from `memory/in-progress/<name>/spec.md` and generate every f
 
 ---
 
-**Input**: Optionally provide the agent system name (e.g., `/promptsystem:build my-agent`). If omitted, I'll list available specs in `memory/in-progress/` and ask you to pick one.
+**Input**: Optionally provide the agent system name (e.g., `/promptsystem-build my-agent`). If omitted, I'll list available specs in `memory/in-progress/` and ask you to pick one.
 
 ---
 
@@ -22,7 +22,7 @@ If no name provided:
 - List the directories in `memory/in-progress/`
 - If exactly one exists, use it and announce: "Using spec for `<name>`."
 - If multiple exist, ask the user to choose
-- If none exist, say: "No specs found. Run `/promptsystem:design` first to create one."
+- If none exist, say: "No specs found. Run `/promptsystem-design` first to create one."
 
 Parse the spec to extract:
 - Agent system name
@@ -51,7 +51,7 @@ prompt-systems/<name>/
 
 ### 3. Build each prompt file
 
-For each prompt in the spec, create `prompt-systems/<name>/prompts/<filename>.md`.
+For each prompt in the spec, create `prompt-systems/<name>/prompts/<filename>.prompt.md`.
 
 **Every prompt file must include:**
 
@@ -81,7 +81,7 @@ description: <one-line description — what it does and when to invoke it>
 - Specify file paths explicitly (use the agentically layout: `prompt-systems/<name>/prompts/`, etc.)
 - Name CLI commands exactly as the user would type them
 - End with a clear "next step" that chains to the next prompt in the workflow, e.g.:
-  > "Run `/promptsystem:test <name>` to validate the files you just created."
+  > "Run `/promptsystem-test <name>` to validate the files you just created."
 
 Write out each prompt file fully — don't leave placeholder text.
 

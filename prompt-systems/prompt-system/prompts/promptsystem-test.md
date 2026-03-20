@@ -8,7 +8,7 @@ I'll run a structured checklist covering structure, frontmatter, prompt quality,
 
 ---
 
-**Input**: Optionally provide the agent system name (e.g., `/promptsystem:test my-agent`). If omitted, I'll detect from `prompt-systems/` or ask.
+**Input**: Optionally provide the agent system name (e.g., `/promptsystem-test my-agent`). If omitted, I'll detect from `prompt-systems/` or ask.
 
 ---
 
@@ -23,7 +23,7 @@ If no name:
 - Exclude well-known non-agent directories (`README.md`, etc.)
 - If one candidate, use it and announce
 - If multiple, ask the user which one to test
-- If none, say: "No agent systems found in `prompt-systems/`. Run `/promptsystem:build` first."
+- If none, say: "No agent systems found in `prompt-systems/`. Run `/promptsystem-build` first."
 
 ---
 
@@ -65,4 +65,4 @@ Create `memory/in-progress/<name>/test-results.md` with a structured report and 
 
 ### 8. Report and next steps
 
-If all checks pass: "All checks passed! Run `/promptsystem:submit <name>` to prepare your registry PR." Otherwise provide issues and guidance to fix them.
+If all checks pass: "All checks passed! Run `/promptsystem-submit <name>` to prepare your registry PR." Otherwise provide issues and guidance to fix them.

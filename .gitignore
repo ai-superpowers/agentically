@@ -1,2 +1,9 @@
 .venv
 __pycache__/
+
+.github/prompts/
+.github/skills/
+.github/memory/
+
+site/
+mkdocs.yml
