@@ -25,7 +25,7 @@ Downloads the named agent system from the registry into your current working dir
 ```bash
 mkdir my-project
 cd my-project
-agentically create agent-system
+agentically create prompt-system
 ```
 
 Options:
@@ -40,13 +40,13 @@ Options:
 
 ```bash
 # GitHub Copilot — adds content to .github/copilot-instructions.md
-agentically create agent-system --platform copilot
+agentically create prompt-system --platform copilot
 
 # Claude Code — creates or appends to CLAUDE.md
-agentically create agent-system --platform claude
+agentically create prompt-system --platform claude
 
 # Kiro — creates .kiro/steering/<name>.md
-agentically create agent-system --platform kiro
+agentically create prompt-system --platform kiro
 ```
 
 The CLI will also auto-detect your platform if you have existing config files (`.github/copilot-instructions.md`, `CLAUDE.md`, `.kiro/`).

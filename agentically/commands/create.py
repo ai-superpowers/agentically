@@ -26,14 +26,14 @@ _console = Console()
 
 
 def _get_agent_files(name: str) -> list[dict]:
-    """Return all blob entries under agents/<name>/ via the recursive trees API."""
+    """Return all blob entries under prompt-systems/<name>/ via the recursive trees API."""
     resp = requests.get(
         f"{_API_BASE}/git/trees/{REGISTRY_BRANCH}?recursive=1",
         headers=_HEADERS,
         timeout=15,
     )
     resp.raise_for_status()
-    prefix = f"agents/{name}/"
+    prefix = f"prompt-systems/{name}/"
     return [
         item
         for item in resp.json().get("tree", [])
@@ -148,7 +148,7 @@ def create_command(
 
     adapter = get_adapter(active_platform) if active_platform else None
 
-    prefix = f"agents/{name}/"
+    prefix = f"prompt-systems/{name}/"
     written: list[Path] = []
     skipped: list[Path] = []
 

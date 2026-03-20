@@ -14,7 +14,7 @@ cd agentically
 ### 2. Create a folder for your agent system
 
 ```bash
-mkdir agents/my-agent-system
+mkdir prompt-systems/my-agent-system
 ```
 
 Use a descriptive **kebab-case** name (e.g., `typescript-strict`, `test-driven-dev`, `security-first`).
@@ -24,7 +24,7 @@ Use a descriptive **kebab-case** name (e.g., `typescript-strict`, `test-driven-d
 At minimum, include a `README.md`:
 
 ```
-agents/my-agent-system/
+prompt-systems/my-agent-system/
   README.md          ← required: describe what your agent system does
   /prompts           ← recommended: core instructions for AI assistants
   /skills			 ← recommended:  skills for AI assistants

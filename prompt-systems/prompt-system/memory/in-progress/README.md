@@ -6,9 +6,9 @@ Each subdirectory corresponds to one agent system under construction:
 
 ```
 in-progress/
-  <agent-system-name>/
-    spec.md           ← design spec (created by /agentsystem:design)
-    test-results.md   ← validation results (created by /agentsystem:test)
+  <prompt-system-name>/
+    spec.md           ← design spec (created by /promptsystem:design)
+    test-results.md   ← validation results (created by /promptsystem:test)
 ```
 
 Files here are working state — safe to delete once you've submitted your agent system to the registry.

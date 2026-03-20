@@ -9,7 +9,7 @@ context: |
   CLI install command: agentically create <name>
 
   Agent system directory layout:
-    agents/<name>/
+    prompt-systems/<name>/
       prompts/          ← user-invokable AI commands (.md with YAML frontmatter)
       skills/           ← persistent AI behaviors (<skill-name>/SKILL.md)
       memory/           ← runtime working state (config.yaml, subdirectories)

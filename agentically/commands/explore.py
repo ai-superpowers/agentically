@@ -16,11 +16,11 @@ from agentically._config import REGISTRY_ORG, REGISTRY_REPO, REGISTRY_BRANCH
 
 REGISTRY_URL = (
     f"https://github.com/{REGISTRY_ORG}/{REGISTRY_REPO}"
-    f"/tree/{REGISTRY_BRANCH}/agents"
+    f"/tree/{REGISTRY_BRANCH}/prompt-systems"
 )
 _API_URL = (
     f"https://api.github.com/repos/{REGISTRY_ORG}/{REGISTRY_REPO}"
-    f"/contents/agents"
+    f"/contents/prompt-systems"
 )
 _CACHE_FILE = Path(tempfile.gettempdir()) / "agentically_listing_cache.json"
 _CACHE_TTL = 3600  # 1 hour
